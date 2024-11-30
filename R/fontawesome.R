@@ -73,7 +73,6 @@ get_fontawesome_data <- function() {
 }
 
 
-#How to convert it to hex or the actual code so that it will display the unicode
 
 
 
