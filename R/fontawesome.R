@@ -1,3 +1,19 @@
+
+
+
+
+##' list fontawesome fonts (families)
+##'
+##'
+##' @title list.fafonts
+##' @return fontawesome font files
+##' @export
+##' @author abs
+list.fafonts <- function() {
+  efproto$list_fonts(type='emoji')
+}
+
+
 ##' search fontawesome
 ##'
 ##'

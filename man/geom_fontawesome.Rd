@@ -10,6 +10,7 @@ geom_fontawesome(
   size = 120,
   x = 1,
   y = 1,
+  family = "fontawesome-webfont",
   ...
 )
 }
