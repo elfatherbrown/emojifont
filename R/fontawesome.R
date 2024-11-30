@@ -10,7 +10,7 @@
 ##' @export
 ##' @author abs
 list.fafonts <- function() {
-  efproto$list_fonts(type='emoji')
+  efproto$list_fonts(type='fontawesome')
 }
 
 
