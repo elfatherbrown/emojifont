@@ -1,0 +1,78 @@
+---
+title: "How to update fontawesome"
+format: html
+editor: visual
+---
+
+## So how to update it
+
+```{r setup}
+
+#So this compiles for your version of the package
+
+devtools::load_all()
+```
+
+The original package ships with old fonts but otherwise it works fine. So to update it youll need to build your own package.
+
+Once you clone you will need devtools, dplyr and purrr to make this work.
+
+## Download the fonts
+
+So go download the zipfile of free fontawesome stuff, this package has an icons.json file. Put it in inst/icons.json. 
+
+### Update the font database
+
+After that you can do this and get the fontawesome_data dataframe as such
+
+```{r}
+f <- file.path(system.file(package = "emojifont"), "icons.json")
+ 
+f
+```
+
+```{r}
+
+# Load and process the JSON data
+json_icons <- jsonlite::fromJSON(readLines(f, encoding = "UTF-8"))
+
+# Create a tibble with the updated FontAwesome data
+fontawesome_data <- dplyr::tibble(
+    real_name = names(json_icons)
+) |>
+    dplyr::mutate(
+        aliases = paste0("fa-", real_name),
+        fa = purrr::map_chr(real_name, ~ purrr::pluck(json_icons, .x, "unicode")),
+        fa_unicode = purrr::map_vec(
+            fa,
+            ~ as.hexmode(.x) |> 
+              as.integer() |> 
+              intToUtf8()
+        ),
+        html = paste0("&#x",fa)
+    ) |> 
+  dplyr::select(fa=fa_unicode,aliases) |> 
+  as.data.frame()
+
+# Display a random sample of the updated data
+fontawesome_data |> dplyr::slice_sample()
+
+```
+
+Now you can save it to the sysdata.rda file using the save() function:
+
+```{r}
+# Save updated data to sysdata.rda
+save(
+    emoji_data, fontawesome_data,
+    file = file.path(here::here(), "R", "sysdata.rda"),
+    compress = "xz"
+)
+
+```
+
+
+### But wait! Now the font files!
+
+The same zip file has a webfonts subdirectory. In there, there are woff files and ttf files. You will ONLY need the ttfs. Place them in inst/fonts.
+

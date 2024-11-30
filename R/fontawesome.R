@@ -50,7 +50,9 @@ fontawesome <- function(aliases) {
 ##' @export
 ##' @author ygc
 load.fontawesome <- function(font = "fontawesome-webfont.ttf") {
-    efproto$load_font(font=font, type='fontawesome')
+  fnts <- efproto$list_fonts("fontawesome")
+ # purrr::walk(fnts, efproto$load_font, type='fontawesome')
+  lapply(fnts, function(f) efproto$load_font(f, type = 'fontawesome'))
 }
 
 
@@ -58,6 +60,8 @@ load.fontawesome <- function(font = "fontawesome-webfont.ttf") {
 get_fontawesome_data <- function() {
     ## copy font table from:
     ## https://fortawesome.github.io/Font-Awesome/cheatsheet/
+    ##
+  ### This now gets done in the vignette for update_fontawesome.qmd
     y <- read.delim(pipe("pbpaste"), stringsAsFactors=F)
     fa <- gsub("(.*)fa.*", '\\1', y[,1])
     html <- gsub(".*\\[(.*)\\].*",'\\1', y)
@@ -67,6 +71,10 @@ get_fontawesome_data <- function() {
     fontawesome_data <- data.frame(fa=fa, aliases=aliases, html=html, stringsAsFactors=FALSE)
     return(fontawesome_data)
 }
+
+
+#How to convert it to hex or the actual code so that it will display the unicode
+
 
 
 ## example
