@@ -2,6 +2,7 @@
 
 
 
+
 ##' list fontawesome fonts (families)
 ##'
 ##'
@@ -10,7 +11,7 @@
 ##' @export
 ##' @author abs
 list.fafonts <- function() {
-  efproto$list_fonts(type='fontawesome')
+  efproto$list_fonts(type = 'fontawesome')
 }
 
 
@@ -23,8 +24,13 @@ list.fafonts <- function() {
 ##' @return corresponding aliases
 ##' @export
 ##' @author ygc
-search_fontawesome <- function(str, approximate=FALSE) {
-    efproto$search(str=str, type='aliases', approximate=approximate, font_data=fontawesome_data)
+search_fontawesome <- function(str, approximate = FALSE) {
+  efproto$search(
+    str = str,
+    type = 'aliases',
+    approximate = approximate,
+    font_data = fontawesome_data
+  )
 }
 
 
@@ -39,8 +45,8 @@ search_fontawesome <- function(str, approximate=FALSE) {
 ##' @examples
 ##' sample_fontawesome(3)
 ##' @author guangchuang yu
-sample_fontawesome <- function(size, replace=FALSE) {
-    sample(unlist(fontawesome_data$aliases), size, replace)
+sample_fontawesome <- function(size, replace = FALSE) {
+  sample(unlist(fontawesome_data$aliases), size, replace)
 }
 
 ##' convert fontawesome aliases to text
@@ -54,7 +60,7 @@ sample_fontawesome <- function(size, replace=FALSE) {
 ##' fontawesome('fa-twitter')
 ##' @author ygc
 fontawesome <- function(aliases) {
-    mapper_(aliases, fontawesome_data)
+  mapper_(aliases, fontawesome_data)
 }
 
 ##' load fontawesome
@@ -67,25 +73,31 @@ fontawesome <- function(aliases) {
 ##' @author ygc
 load.fontawesome <- function(font = "fontawesome-webfont.ttf") {
   fnts <- efproto$list_fonts("fontawesome")
- # purrr::walk(fnts, efproto$load_font, type='fontawesome')
-  lapply(fnts, function(f) efproto$load_font(f, type = 'fontawesome'))
+  # purrr::walk(fnts, efproto$load_font, type='fontawesome')
+  invisible(lapply(fnts, function(f)
+    efproto$load_font(f, type = 'fontawesome')))
 }
 
 
 ##' @importFrom utils read.delim
 get_fontawesome_data <- function() {
-    ## copy font table from:
-    ## https://fortawesome.github.io/Font-Awesome/cheatsheet/
-    ##
+  ## copy font table from:
+  ## https://fortawesome.github.io/Font-Awesome/cheatsheet/
+  ##
   ### This now gets done in the vignette for update_fontawesome.qmd
-    y <- read.delim(pipe("pbpaste"), stringsAsFactors=F)
-    fa <- gsub("(.*)fa.*", '\\1', y[,1])
-    html <- gsub(".*\\[(.*)\\].*",'\\1', y)
-
-    aliases <- gsub(".*(fa.*)\\s+.*", '\\1', y)
-
-    fontawesome_data <- data.frame(fa=fa, aliases=aliases, html=html, stringsAsFactors=FALSE)
-    return(fontawesome_data)
+  y <- read.delim(pipe("pbpaste"), stringsAsFactors = F)
+  fa <- gsub("(.*)fa.*", '\\1', y[, 1])
+  html <- gsub(".*\\[(.*)\\].*", '\\1', y)
+  
+  aliases <- gsub(".*(fa.*)\\s+.*", '\\1', y)
+  
+  fontawesome_data <- data.frame(
+    fa = fa,
+    aliases = aliases,
+    html = html,
+    stringsAsFactors = FALSE
+  )
+  return(fontawesome_data)
 }
 
 
