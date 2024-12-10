@@ -8,4 +8,4 @@ School of Public Health, The University of Hong Kong
 
 ## What do?
 
-Read [["]]
+I just updated fontawesome and documented how to do it in the [update_fontawesome.qmd vignette](/vignette/update_fontawesome.html).
